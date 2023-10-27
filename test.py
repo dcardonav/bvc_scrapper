@@ -30,7 +30,10 @@ driver = webdriver.Firefox(options=options)
 
 # para mercado global
 # mercado = "renta-variable_mercado-global-colombiano"
+# prefijo = "RVMGC_"
+
 # para mercado local
+prefijo = "RVLocal_"
 mercado = "renta-variable_mercado-global-colombiano"
 
 
@@ -47,7 +50,7 @@ driver.implicitly_wait(1)
 
 # El código funciona desde el último mes hasta el primero, dado que el ejemplo está con 2023, el último mes
 # disponible en este momento es octubre
-anio = 2017
+anio = 2013
 mes = 12
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
@@ -76,8 +79,10 @@ for i in range(mes, 0, -1):
 
         month = driver.find_element(By.CSS_SELECTOR, "button.react-calendar__tile:nth-child(" + str(i) + ")")
         cur_month = month.accessible_name.split()[1]
+        # truco para evitar problemas con la interfaz del chatbot
+        driver.execute_script("window.scrollTo(0, 50)")
         month.click()
-
+        time.sleep(1)
 
         # truco para lidiar con el tamaño variable del calendario
         try:
@@ -93,9 +98,10 @@ for i in range(mes, 0, -1):
                 day = driver.find_element(By.CSS_SELECTOR, "button.react-calendar__tile:nth-child(" + str(j) + ")")
             else:
                 break
-
+        # truco para evitar problemas con la interfaz del chatbot
+        driver.execute_script("window.scrollTo(0, 120)")
         day.click()
-        time.sleep(1)
+        time.sleep(4)
 
         # traemos la fecha del calendario y luego la convertimos a fecha para
         # comparar si es antigua
@@ -115,7 +121,7 @@ for i in range(mes, 0, -1):
                 df.iloc[:, 2] = df.iloc[:, 2].str.replace(',', '')
                 df.iloc[:, 2] = df.iloc[:, 2].astype(float)
                 df.to_csv(os.path.join(r"C:\Users\dcardon\Downloads\downloads_2",
-                                       "RVLocal_"+str(aux_fecha.year) +
+                                       prefijo+str(aux_fecha.year) +
                                        str("{:02d}".format(aux_fecha.month)) +
                                        str("{:02d}".format(aux_fecha.day))+".csv"),
                           sep= ";", decimal=",", index=False)
