@@ -148,16 +148,5 @@ for i in range(mes, 0, -1):
             time.sleep(1)
 
 
-
-
-
-
-
-# driver.get("https://www.bvc.com.co/mercado-local-en-linea?tab=renta-variable_mercado-global-colombiano")
-
-# elem2 = driver.find_element(By.XPATH, '/html[1]/body[1]/div[1]/div[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/section[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/button[1]/abbr[1]')
-# elem2.click()
-# elem3 = driver.find_element(By.XPATH, '/html[1]/body[1]/div[1]/div[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/section[1]/div[5]/div[2]/div[1]/button[1]')
-# elem3.click()
 driver.close()
 
