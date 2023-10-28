@@ -10,7 +10,6 @@ import datetime
 import os.path
 
 import pandas as pd
-import bs4
 import io
 
 from selenium import webdriver
@@ -21,7 +20,7 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 
 ruta_descarga = os.path.join(os.getcwd(), "historicos")
-espera_datos = 4
+espera_datos = 3
 
 options = Options()
 options.set_preference("browser.download.folderList", 2)
@@ -53,7 +52,7 @@ driver.implicitly_wait(1)
 
 # El código funciona desde el último mes hasta el primero, dado que el ejemplo está con 2023, el último mes
 # disponible en este momento es octubre
-anio = 2011
+anio = 2010
 mes = 12
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
