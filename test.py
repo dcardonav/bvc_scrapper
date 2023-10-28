@@ -20,10 +20,13 @@ from selenium.common.exceptions import NoSuchElementException
 
 import time
 
+ruta_descarga = os.path.join(os.getcwd(), "historicos")
+espera_datos = 4
+
 options = Options()
 options.set_preference("browser.download.folderList", 2)
 options.set_preference("browser.download.manager.showWhenStarting", False)
-options.set_preference("browser.download.dir", r"C:\Users\dcardon\Downloads\downloads_2") #
+options.set_preference("browser.download.dir", ruta_descarga) #
 options.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip")
 driver = webdriver.Firefox(options=options)
 
@@ -50,7 +53,7 @@ driver.implicitly_wait(1)
 
 # El código funciona desde el último mes hasta el primero, dado que el ejemplo está con 2023, el último mes
 # disponible en este momento es octubre
-anio = 2013
+anio = 2011
 mes = 12
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
@@ -101,7 +104,9 @@ for i in range(mes, 0, -1):
         # truco para evitar problemas con la interfaz del chatbot
         driver.execute_script("window.scrollTo(0, 120)")
         day.click()
-        time.sleep(4)
+        # en caso de que la conexión sea lenta, damos tiempo para que se carguen los datos,
+        # se puede hacer mirando el la respuesta, pero esta es la forma quick and dirty
+        time.sleep(espera_datos)
 
         # traemos la fecha del calendario y luego la convertimos a fecha para
         # comparar si es antigua
@@ -113,6 +118,7 @@ for i in range(mes, 0, -1):
             # bloque innecesario si el código se ejecuta en el flujo correcto
             mayor_cinco_anios = False
         if mayor_cinco_anios:
+            # si es mayor a cinco años, es necesario sacar los datos del elemento table
             df = pd.read_html(io.StringIO(driver.page_source))
             if len(df) == 1 and df[0].shape[0] > 1:
                 df = df[0]
@@ -120,7 +126,8 @@ for i in range(mes, 0, -1):
                 df.iloc[:, 2] = df.iloc[:, 2].str.replace('-', '0')
                 df.iloc[:, 2] = df.iloc[:, 2].str.replace(',', '')
                 df.iloc[:, 2] = df.iloc[:, 2].astype(float)
-                df.to_csv(os.path.join(r"C:\Users\dcardon\Downloads\downloads_2",
+                # TODO: ruta quemada
+                df.to_csv(os.path.join(ruta_descarga,
                                        prefijo+str(aux_fecha.year) +
                                        str("{:02d}".format(aux_fecha.month)) +
                                        str("{:02d}".format(aux_fecha.day))+".csv"),
@@ -135,6 +142,7 @@ for i in range(mes, 0, -1):
                 j = j + 1
 
             descarga.click()
+            time.sleep(1)
             close_download = driver.find_element(By.CSS_SELECTOR, ".sc-EgOXT")
             close_download.click()
             time.sleep(1)
