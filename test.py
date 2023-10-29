@@ -7,28 +7,26 @@ __maintainer__ = "David Cardona-Vasquez"
 __status__ = "Development"
 
 import datetime
-import os.path
-
-import pandas as pd
 import io
-
+import os.path
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import NoSuchElementException
-
 import time
 
+
+# dónde se almacenará la información descargada, por defecto asume la existencia de una
+# carpeta llamada historicos donde se encuentra el proyecto
 ruta_descarga = os.path.join(os.getcwd(), "historicos")
+# tiempo en segundos a esperar después de seleccionar una fecha particular, entre más
+# lenta sea la conexión, mayor debe ser el valor
 espera_datos = 3
 
-options = Options()
-options.set_preference("browser.download.folderList", 2)
-options.set_preference("browser.download.manager.showWhenStarting", False)
-options.set_preference("browser.download.dir", ruta_descarga) #
-options.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip")
-driver = webdriver.Firefox(options=options)
 
+#configuración de los datos a consultar, el prefijo corresponde al nombre que tendrá
+# el archivo descargado
 
 # para mercado global
 # mercado = "renta-variable_mercado-global-colombiano"
@@ -38,6 +36,15 @@ driver = webdriver.Firefox(options=options)
 prefijo = "RVLocal_"
 mercado = "renta-variable_mercado-global-colombiano"
 
+
+# opciones de configuración del driver, en este caso para Firefox.
+options = Options()
+options.set_preference("browser.download.folderList", 2)
+options.set_preference("browser.download.manager.showWhenStarting", False)
+options.set_preference("browser.download.dir", ruta_descarga)
+# esta opción habilita la descarga automática sin preguntar
+options.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip")
+driver = webdriver.Firefox(options=options)
 
 driver.get("https://www.bvc.com.co/mercado-local-en-linea?tab="+mercado)
 driver.implicitly_wait(1)
@@ -52,7 +59,7 @@ driver.implicitly_wait(1)
 
 # El código funciona desde el último mes hasta el primero, dado que el ejemplo está con 2023, el último mes
 # disponible en este momento es octubre
-anio = 2010
+anio = 2023
 mes = 12
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
@@ -125,7 +132,6 @@ for i in range(mes, 0, -1):
                 df.iloc[:, 2] = df.iloc[:, 2].str.replace('-', '0')
                 df.iloc[:, 2] = df.iloc[:, 2].str.replace(',', '')
                 df.iloc[:, 2] = df.iloc[:, 2].astype(float)
-                # TODO: ruta quemada
                 df.to_csv(os.path.join(ruta_descarga,
                                        prefijo+str(aux_fecha.year) +
                                        str("{:02d}".format(aux_fecha.month)) +

@@ -1,19 +1,24 @@
+__author__ = "David Cardona-Vasquez"
+__copyright__ = "Copyright 2023, David Cardona-Vasquez"
+__credits__ = ["David Cardona-Vasquez"]
+__license__ = "MIT"
+__version__ = "0.0.1"
+__maintainer__ = "David Cardona-Vasquez"
+__status__ = "Development"
 
 import datetime
 import os
 import pandas as pd
 import pathlib
-import xlrd
 
 raiz = pathlib.Path(os.path.join(os.getcwd(),
                                  "historicos",
                                  "mercado_local"))
 
-
 columnas = ['Nemotécnico', 'Último precio', 'Variación porcentual', 'Volúmenes', 'Cantidad', 'Variación absoluta',
             'Precio apertura', 'Precio máximo', 'Precio mínimo', 'Precio promedio', 'Emisor / Nombre']
 lista_df = []
-for f in raiz.rglob("*.csv"):
+for f in raiz.rglob("RVLocal_*.csv"):
     aux = pd.read_csv(f, sep=";", decimal=",", skiprows=1, header=None, na_values=['-'])
     if aux.shape[1] != 11:
         try:
