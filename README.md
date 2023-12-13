@@ -29,7 +29,7 @@ mes = 12
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
 for i in range(mes, 0, -1):
-    j = 1
+    j = 1¡
     max_day = -1
     while (j < max_day) or max_day == -1:
         # selector para desplegar el calendario
