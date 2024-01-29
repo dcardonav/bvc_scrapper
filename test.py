@@ -60,7 +60,7 @@ driver.implicitly_wait(1)
 # El código funciona desde el último mes hasta el primero, dado que el ejemplo está con 2023, el último mes
 # disponible en este momento es octubre
 anio = 2023
-mes = 11
+mes = 12
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
 for i in range(mes, 9, -1):
