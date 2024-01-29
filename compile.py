@@ -32,7 +32,8 @@ for f in raiz.rglob("RVLocal_*.csv"):
     lista_df.append(aux.copy())
 
 df_completo = pd.concat(lista_df)
-df_completo.to_excel(r"historicos\mercado_local\historico_2010_2023.xlsx", index=False)
+df_completo.to_excel(r"historicos\historico_2010_2023.xlsx", index=False)
+df_completo.to_csv(r"historicos\historico_2010_2023.csv", index=False, sep=';')
 
 
 
