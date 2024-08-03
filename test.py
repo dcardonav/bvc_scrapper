@@ -34,7 +34,8 @@ espera_datos = 3
 
 # para mercado local
 prefijo = "RVLocal_"
-mercado = "renta-variable_mercado-global-colombiano"
+mercado = 'renta-variable_mercado-local'
+# mercado = "renta-variable_mercado-global-colombiano"
 
 
 # opciones de configuración del driver, en este caso para Firefox.
@@ -50,17 +51,18 @@ driver.get("https://www.bvc.com.co/mercado-local-en-linea?tab="+mercado)
 driver.implicitly_wait(1)
 driver.maximize_window()
 
-elem = driver.find_element(By.CSS_SELECTOR, "h3.kmcgzx")
-elem.click()
-elem = driver.find_element(By.CSS_SELECTOR, ".Tooltipstyled__CloseTooltip-sc-fwz25g-14")
-elem.click()
-driver.implicitly_wait(1)
+# elem = driver.find_element(By.CSS_SELECTOR, "h3.kmcgzx")
+# elem = driver.find_element(By.CSS_SELECTOR, ".react-date-picker__calendar-button'")
+# elem.click()
+# elem = driver.find_element(By.CSS_SELECTOR, ".Tooltipstyled__CloseTooltip-sc-fwz25g-14")
+# elem.click()
+# driver.implicitly_wait(1)
 
 
 # El código funciona desde el último mes hasta el primero, dado que el ejemplo está con 2023, el último mes
 # disponible en este momento es octubre
 anio = 2024
-mes = 1
+mes = 7
 mayor_cinco_anios = False
 hoy = datetime.date.today()     # necesario para información antigua
 for i in range(mes, 0, -1):
@@ -140,17 +142,19 @@ for i in range(mes, 0, -1):
             j = j + 1
         else:
             try:
-                descarga = driver.find_element(By.CSS_SELECTOR, ".jlIRBY")
+                # descarga = driver.find_element(By.CSS_SELECTOR, ".jlIRBY").hXkDTY
+                descarga = driver.find_element(By.CSS_SELECTOR, '.hXkDTY')
             except NoSuchElementException:
                 continue
             finally:
                 j = j + 1
 
             descarga.click()
-            time.sleep(1)
-            close_download = driver.find_element(By.CSS_SELECTOR, ".sc-EgOXT")
-            close_download.click()
-            time.sleep(1)
+            time.sleep(10)
+            # close_download = driver.find_element(By.CSS_SELECTOR, ".sc-EgOXT")
+            # close_download = driver.find_element(By.CSS_SELECTOR, ".sc - pAZqv")
+            # close_download.click()
+            time.sleep(2)
 
 
 driver.close()
